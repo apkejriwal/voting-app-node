@@ -50,6 +50,12 @@ module.exports = function(app, passport) {
         });
     });
 
+    app.get('/voting', isLoggedIn, function(req,res){
+        res.render('voting.ejs', {
+            user :req.user 
+        })
+    });
+
     app.post('/login', passport.authenticate('local-login', {
         successRedirect : '/profile', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
