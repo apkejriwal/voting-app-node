@@ -11,38 +11,33 @@
         body        { padding-top:80px; word-wrap:break-word; }
     </style>
 </head>
+
+<script>
+  var vote = "no";
+  var socket = io();
+
+    function voteYes() {
+        vote = "yes";
+        socket.emit('vote', vote);
+    }
+
+    function voteNo() {
+        vote = "no";
+        socket.emit('vote', vote);
+    }
+    
+</script>
+
 <body>
 <div class="container">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-    </div>
-
-    <div id="tester">
+        <h1><span class="fa fa-anchor"></span> Voting Page</h1>
     </div>
 
     <div class="row">
-
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
-
-                    <p>
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
-                    </p>
-
-            </div>
-        </div>
-
-        <div class="col-sm-6">
-            <h2 id="client_count"></h2>
-        </div>
-
-
+        <button onclick="voteYes()">Yes</button>
+        <button onclick="voteNo()">No</button>
     </div>
 
 </div>
@@ -50,6 +45,7 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <script>
+
     var socket = io();
 
     socket.emit('loginProfile', 'hit');

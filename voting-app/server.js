@@ -56,6 +56,18 @@ io.on('connection', function(socket){
 
   socket.on('loginProfile', function(data) {
     console.log(data, "inside");
+
+  socket.on('vote', function(vote) {
+    if (vote === 'yes') {
+      ++yes;
+    }
+    else {
+      ++no;
+    }
+    console.log(yes, 'yes');
+    console.log(no, 'no');
+  });
+
 });
 
 });
