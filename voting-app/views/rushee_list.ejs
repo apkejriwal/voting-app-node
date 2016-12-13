@@ -16,17 +16,13 @@
 
     <h1><span class="fa fa-sign-in"></span>View All Rushees</h1>
 
-    <p> <%= first_names_list %> </p>
-    <p> <%= last_names_list %> </p>
-    <p> <%= majors_list %> </p>
-    <p> <%= emails_list %> </p>
-
           <table class="table">
                 <thead>
                   <tr>
                     <th>First Name</th>
                     <th>Last Name </th>
                     <th>Major</th>
+                    <th>Email</th>
                     <th>Yes Votes</th>
                     <th>No Votes</th>
                     <th></th>
@@ -42,8 +38,40 @@
                     <td><%= majors_list[i] %></td>
                     <td><%= emails_list[i] %></td>
                     <td></td>
-                    <td><button id="<% i + 1 %>" type="button" value ="<%= user.local.email %>" data-value-1="<%= emails_list[i] %>" onclick="voteYes()" class="btn btn-default btn-sm">Yes</button></td>
-                    <td><button id="<% i + 2 %>" type="button" value = "<%= user.local.email %>" data-value-2="<%= emails_list[i] %>"  onclick="voteNo()" class="btn btn-default btn-sm">No</button></td>
+                    <td></td>
+                    <td> 
+                        <form action="/vote" method="post" type="hidden">
+                            <div>
+                                <input type="hidden" value ="<%= user.local.email %>" name="brother_email">
+                            </div>
+                            <div>           
+                                <input type="hidden" value="<%= emails_list[i] %>" name="rushee_email">
+                            </div>
+
+                            <div>
+                                <input type="hidden" value="Yes"  name="vote_value">
+                            </div>
+                        <button type="submit" class="btn btn-default btn-sm">Yes</button>
+                        </form>
+                    </td>
+
+                    <td> 
+                        <form action="/vote" method="post" type="hidden">
+                            <div>
+                                <input type="hidden" value ="<%= user.local.email %>" name="brother_email">
+                            </div>
+                            <div>           
+                                <input type="hidden" value="<%= emails_list[i] %>" name="rushee_email">
+                            </div>
+
+                            <div>
+                                <input type="hidden" value="No"  name="vote_value">
+                            </div>
+                        <button type="submit" class="btn btn-default btn-sm">No</button>
+                        </form>
+                    </td>
+                   <!--  <td><button id="<% i + 1 %>" type="button" value ="<%= user.local.email %>" data-value-1="<%= emails_list[i] %>" onclick="voteYes()" class="btn btn-default btn-sm">Yes</button></td>
+                    <td><button id="<% i + 2 %>" type="button" value = "<%= user.local.email %>" data-value-2="<%= emails_list[i] %>"  onclick="voteNo()" class="btn btn-default btn-sm">No</button></td> -->
                   </tr>
                 <% } %>
 
@@ -65,21 +93,21 @@
     function voteYes() {
         var vote = "yes";
 
-        var brother_email = document.getElementById("1").value;
-        var buttom1 = document.getElementById("1");
-        var rushee_email = buttom1.getAttribute("data-value-1");
-        console.log(rushee_email, "voteYes");
-        socket.emit('vote', [vote, brother_email, rushee_email]); 
+        // var brother_email = document.getElementById("1").value;
+        // var buttom1 = document.getElementById("1");
+        // var rushee_email = buttom1.getAttribute("data-value-1");
+        // console.log(rushee_email, "voteYes");
+        // socket.emit('vote', [vote, brother_email, rushee_email]); 
     }
 
     function voteNo() {
         var vote = "no";
 
-        var brother_email = document.getElementById("2").value;
-        var buttom2 = document.getElementById("2");
-        var rushee_email = buttom2.getAttribute("data-value-2");
-        console.log(rushee_email, "voteNo");
-        socket.emit('vote', [vote, brother_email, rushee_email]);
+        // var brother_email = document.getElementById("2").value;
+        // var buttom2 = document.getElementById("2");
+        // var rushee_email = buttom2.getAttribute("data-value-2");
+        // console.log(rushee_email, "voteNo");
+        // socket.emit('vote', [vote, brother_email, rushee_email]);
     }
 
 </script>

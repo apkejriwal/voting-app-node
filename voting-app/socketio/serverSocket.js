@@ -23,14 +23,14 @@ exports.init = function(io) {
           // });
 
           socket.on('vote', function(vote) {
-            // if (vote === 'yes') {
-            //   ++yes;
-            // }
-            // else {
-            //   ++no;
-            // }
-            // console.log(yes, 'yes');
-            // console.log(no, 'no');
+            if (vote === 'yes') {
+              ++yes;
+            }
+            else {
+              ++no;
+            }
+            console.log(yes, 'yes');
+            console.log(no, 'no');
             console.log(vote);
           });
 

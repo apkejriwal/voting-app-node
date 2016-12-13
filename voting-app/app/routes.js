@@ -103,6 +103,97 @@ module.exports = function(app, passport) {
          })  
         });
 
+    // =====================================
+    // VOTING SECTION ======================
+    // =====================================
+
+    app.post('/vote', function(req,res){
+    
+        //brother push add, check if there is a previous rushee object
+        User.byBrotherEmail(req.body.brother_email, function(err, rou) {
+            if (rou) {
+
+                console.log("before rou");
+                console.log(rou);
+                console.log("afte rou");
+
+                console.log(req.user._id);
+                console.log("after req");
+                var votes_list = rou[0].votes
+
+
+                 console.log("req body bef");
+
+                console.log(req.body);
+
+                console.log("req body af");
+                var dict_vote = req.body;
+
+                var update_bool = false;
+
+                for (var i = 0; i < votes_list.length; i ++) {
+                    if (votes_list[i].rushee_email == req.body.rushee_email) {
+                        rou[0].votes[i] = dict_vote
+                        update_bool = true; 
+
+                        console.log(rou[0].votes[0]);
+                        console.log('before save');
+
+                        // rou[0].save(function (err, updatedVote) {
+                        //     if (err) return handleError(err);
+                        //     res.send(updatedVote);
+                        // });
+
+                        // User.update({'_id': userID}, { $set: { role : 'Rushee' }}, cb);
+
+                        User.update({'_id': req.user._id}, {$set: {'votes.vote_value': req.body.vote_value}}, function (err, result) {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                    }
+                }
+
+                if (!update_bool) {
+                    rou[0].votes.push(dict_vote);
+                    rou[0].save(function(err) {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                }
+            }
+        });
+
+        User.byRusheeEmail(req.body.rushee_email, function(err, rou) {
+            if (rou) {
+
+                var votes_list = rou[0].votes
+                var dict_vote = req.body;
+
+                var update_bool = false;
+
+                for (var i = 0; i < votes_list.length; i ++) {
+                    if (votes_list[i].brother_email == req.body.brother_email) {
+                        rou[0].votes[i] = dict_vote
+                        update_bool = true; 
+                    }
+                }
+
+                if (!update_bool) {
+                    rou[0].votes.push(dict_vote);
+
+                    rou[0].save(function(err) {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                }
+            }
+        });
+        res.redirect('rushee_list')
+    });
+
 
     // =====================================
     // LOGOUT ==============================
@@ -119,15 +210,6 @@ function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on 
     if (req.isAuthenticated())
         return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/');
-}
-
-function isBrother(req,res,next) {
-    if (req.isAuthenticated())
-        if (req.user.role === 'Pledge');
-            return next();
 
     // if they aren't redirect them to the home page
     res.redirect('/');
