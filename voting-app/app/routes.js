@@ -52,16 +52,6 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
 
-  //   app.post('/login', passport.authenticate('local-login'), function(req, res) {
-  //       console.log(req);
-
-  //   // If this function gets called, authentication was successful.
-  //   // `req.user` contains the authenticated user.
-  //       res.redirect('/profile');
-  // });
-
-
-
     // =====================================
     // VOTING SECTION =====================
     // =====================================
@@ -92,3 +82,14 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 }
+
+function isBrother(req,res,next) {
+    if (req.isAuthenticated())
+        if (req.user.role === 'Pledge');
+            return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+
+}
+

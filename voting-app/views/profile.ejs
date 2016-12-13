@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
-
     <style>
         body        { padding-top:80px; word-wrap:break-word; }
     </style>
@@ -19,33 +18,16 @@
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
+    // load the rushee profile if a rushee
+    <% if (user.role == 'Rushee') { %>
+        <% include ./partials/rushee %>
+    <% } %>
 
-    <div class="row">
+    // load the brother profile if a brother
+    <% if (user.role == 'Rushee') { %>
+        <% include ./partials/rushee %>
+    <% } %>
 
-    <p> Your decision will be announced in the upcoming 2 weeks! </p>
-
-        <!-- LOCAL INFORMATION -->
-        <div class="col-sm-6">
-            <div class="well">
-                <h3><span class="fa fa-user"></span> Local</h3>
-
-                    <p>
-                        <strong>id</strong>: <%= user._id %><br>
-
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
-
-                        <strong>first_name</strong>: <%= user.personal.first_name %>
-                        <strong>last_name</strong>: <%= user.personal.last_name %>
-                        <strong>major</strong>: <%= user.personal.major %>
-                        <strong>major</strong>: <%= user.role %>
-
-                    </p>
-
-            </div>
-        </div>
-
-    </div>
 
 </div>
 </body>

@@ -18,8 +18,8 @@ var userSchema = mongoose.Schema({
     },
     role             : {
         type: String,  
-        enum: ['Brother', 'Pledge'],
-        default: 'Pledge'       
+        enum: ['Brother', 'Rushee'],
+        default: 'Rushee'       
     }, 
     votes: [{
         vote:       {type: String},
