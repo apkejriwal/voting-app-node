@@ -21,9 +21,15 @@ var userSchema = mongoose.Schema({
         enum: ['Brother', 'Rushee'],
         default: 'Rushee'       
     }, 
+    // votes: {
+    //     yes:       { type:Number, default: 0 }, 
+    //     no:        { type:Number, default: 0 }
+    // }
+
     votes: [{
-        vote:       {type: String},
-        brother_id: {type: String},
+        vote:          {type: String},
+        brother_email: {type: String},
+        rushee_email:  {type: String}
     }],
 });
 
@@ -41,7 +47,6 @@ userSchema.methods.validPassword = function(password) {
 userSchema.statics.byRushee = function(role, cb) {
     return this.find({"role": role}, cb);
 };
-
 
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);

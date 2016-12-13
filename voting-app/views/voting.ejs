@@ -12,22 +12,6 @@
     </style>
 </head>
 
-<script>
-  var vote = "no";
-  var socket = io();
-
-    function voteYes() {
-        vote = "yes";
-        socket.emit('vote', vote);
-    }
-
-    function voteNo() {
-        vote = "no";
-        socket.emit('vote', vote);
-    }
-    
-</script>
-
 <body>
 <div class="container">
 
@@ -47,6 +31,18 @@
 <script>
 
     var socket = io();
+
+    var vote = "no";
+
+    function voteYes() {
+        vote = "yes";
+        socket.emit('vote', vote);
+    }
+
+    function voteNo() {
+        vote = "no";
+        socket.emit('vote', vote);
+    }
 
     socket.emit('loginProfile', 'hit');
 

@@ -35,42 +35,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
-var clients = 0; 
-
-var yes = 0; 
-var no =  0; 
-
-io.on('connection', function(socket){
-  console.log('a user connected', "server.js");
-  ++clients; 
-  console.log('clients logged in', clients);
-  io.sockets.emit('users_count', clients);
-
-
-  socket.on('disconnect', function(){
-    console.log('user disconnected');
-    --clients;
-    io.sockets.emit('users_count', clients);
-    console.log(clients, 'num of clients after disconnect');
-  });
-
-  socket.on('loginProfile', function(data) {
-    console.log(data, "inside");
-
-  socket.on('vote', function(vote) {
-    if (vote === 'yes') {
-      ++yes;
-    }
-    else {
-      ++no;
-    }
-    console.log(yes, 'yes');
-    console.log(no, 'no');
-  });
-
-});
-
-});
+require('./socketio/serverSocket.js').init(io);
 
 
 // launch ======================================================================

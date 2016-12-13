@@ -83,6 +83,7 @@ module.exports = function(app, passport) {
                 var first_names = [];
                 var last_names = [];
                 var majors = [];
+                var emails = [];
                 var yes_votes = [];
                 var no_votes = [];
 
@@ -90,13 +91,10 @@ module.exports = function(app, passport) {
                     first_names.push(rou[i].personal.first_name);
                     last_names.push(rou[i].personal.last_name);
                     majors.push(rou[i].personal.major);
-
+                    emails.push(rou[i].local.email);
                 }
-
-
-                res.render('rushee_list.ejs', { first_names_list : first_names, last_names_list : last_names, majors_list : majors })
+                res.render('rushee_list.ejs', {user: req.user, first_names_list : first_names, last_names_list : last_names, majors_list : majors, emails_list: emails })
             }
-
             else {
                 if (err) {
                     console.log(err);
@@ -104,8 +102,6 @@ module.exports = function(app, passport) {
             }
          })  
         });
-
-
 
 
     // =====================================

@@ -19,6 +19,7 @@
     <p> <%= first_names_list %> </p>
     <p> <%= last_names_list %> </p>
     <p> <%= majors_list %> </p>
+    <p> <%= emails_list %> </p>
 
           <table class="table">
                 <thead>
@@ -28,15 +29,21 @@
                     <th>Major</th>
                     <th>Yes Votes</th>
                     <th>No Votes</th>
+                    <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
 
-                <% for(var i=0; i<first_names_list.length; i++) {%>
+                <% for(var i=0; i < first_names_list.length; i++) {%>
                   <tr>
                     <td><%= first_names_list[i] %></td>
                     <td><%= last_names_list[i] %></td>
                     <td><%= majors_list[i] %></td>
+                    <td><%= emails_list[i] %></td>
+                    <td></td>
+                    <td><button id="<% i + 1 %>" type="button" value ="<%= user.local.email %>" data-value-1="<%= emails_list[i] %>" onclick="voteYes()" class="btn btn-default btn-sm">Yes</button></td>
+                    <td><button id="<% i + 2 %>" type="button" value = "<%= user.local.email %>" data-value-2="<%= emails_list[i] %>"  onclick="voteNo()" class="btn btn-default btn-sm">No</button></td>
                   </tr>
                 <% } %>
 
@@ -44,8 +51,38 @@
             </table>
 
     <a href="/profile" class="btn btn-default btn-sm">Back to Profile</a>
-  
+
 </div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+    var socket = io();
+
+    var vote = "";
+
+    function voteYes() {
+        var vote = "yes";
+
+        var brother_email = document.getElementById("1").value;
+        var buttom1 = document.getElementById("1");
+        var rushee_email = buttom1.getAttribute("data-value-1");
+        console.log(rushee_email, "voteYes");
+        socket.emit('vote', [vote, brother_email, rushee_email]); 
+    }
+
+    function voteNo() {
+        var vote = "no";
+
+        var brother_email = document.getElementById("2").value;
+        var buttom2 = document.getElementById("2");
+        var rushee_email = buttom2.getAttribute("data-value-2");
+        console.log(rushee_email, "voteNo");
+        socket.emit('vote', [vote, brother_email, rushee_email]);
+    }
+
+</script>
 
 </div>
 </body>
