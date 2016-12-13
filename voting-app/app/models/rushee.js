@@ -17,11 +17,12 @@ var rusheeSchema = mongoose.Schema({
         major             : String
     },
     role             : {
-        value: { type: String, default: "Brother" }
-    }
+        type: String, 
+        default: "Rushee" 
+    }, 
     votes: [{
-        type: String,
-        default: 'Brother'
+        vote:       {type: String},
+        brother_id: {type: String},
      }],
 });
 

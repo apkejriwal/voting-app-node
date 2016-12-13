@@ -13,13 +13,9 @@ module.exports = function(app, passport) {
     // =====================================
     // show the login form
     app.get('/login', function(req, res) {
-
         // render the page and pass in any flash data if it exists
         res.render('login.ejs', { message: req.flash('loginMessage') }); 
     });
-
-    // process the login form
-    // app.post('/login', do all our passport stuff here);
 
     // =====================================
     // SIGNUP ==============================
@@ -50,17 +46,32 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.get('/voting', isLoggedIn, function(req,res){
-        res.render('voting.ejs', {
-            user :req.user 
-        })
-    });
-
     app.post('/login', passport.authenticate('local-login', {
         successRedirect : '/profile', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
+
+  //   app.post('/login', passport.authenticate('local-login'), function(req, res) {
+  //       console.log(req);
+
+  //   // If this function gets called, authentication was successful.
+  //   // `req.user` contains the authenticated user.
+  //       res.redirect('/profile');
+  // });
+
+
+
+    // =====================================
+    // VOTING SECTION =====================
+    // =====================================
+
+      app.get('/voting', isLoggedIn, function(req,res){
+            res.render('voting.ejs', {
+                user :req.user 
+            })
+        });
+
 
     // =====================================
     // LOGOUT ==============================

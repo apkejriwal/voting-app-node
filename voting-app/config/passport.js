@@ -6,6 +6,7 @@ var LocalStrategy   = require('passport-local').Strategy;
 // load up the user model
 var User            = require('../app/models/user');
 
+
 // expose this function to our app using module.exports
 module.exports = function(passport) {
 
@@ -98,26 +99,17 @@ module.exports = function(passport) {
 
                 // if there is no user with that email
                 // create the user
-                var newUser            = new User();
+                var newUser           = new User();
                
                 // set the user's local credentials
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password);
-
-                console.log(req.body);
-
 
                 newUser.personal.first_name  = req.body.first_name;
                 newUser.personal.last_name  =  req.body.last_name;
                 newUser.personal.major      =  req.body.major;
 
                 newUser.role = req.body.role;
-
-
-                // newUser.brother.year       =  req.body.year;
-                // newUser.brother.number     =  req.body.number;
-                // newUser.brother.position   =  req.body.position;
-                // newUser.brother.active     =  req.body.active;
 
                 // save the user
                 newUser.save(function(err) {

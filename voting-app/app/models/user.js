@@ -17,8 +17,14 @@ var userSchema = mongoose.Schema({
         major             : String
     },
     role             : {
-        value: { type: String, default: "Brother" }
-    }
+        type: String,  
+        enum: ['Brother', 'Pledge'],
+        default: 'Pledge'       
+    }, 
+    votes: [{
+        vote:       {type: String},
+        brother_id: {type: String},
+    }],
 });
 
 // methods ======================
