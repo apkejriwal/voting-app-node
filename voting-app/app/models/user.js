@@ -17,7 +17,7 @@ var userSchema = mongoose.Schema({
         major             : String
     },
     role             : {
-        default: 'Brother'
+        value: { type: String, default: "Brother" }
     }
 });
 
