@@ -1,3 +1,5 @@
+var User            = require('../app/models/user');
+
 // app/routes.js
 module.exports = function(app, passport) {
 
@@ -35,6 +37,7 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
 
+  
     // =====================================
     // PROFILE SECTION =====================
     // =====================================
@@ -61,6 +64,48 @@ module.exports = function(app, passport) {
                 user :req.user 
             })
         });
+
+    // =====================================
+    // ADD BROTHER SECTION =================
+    // =====================================
+
+    app.get('/add_brother', isLoggedIn, function(req,res){
+            res.render('add_brother.ejs')
+        });
+
+    // =====================================
+    // RUSHEE LIST SECTION =================
+    // =====================================
+
+    app.get('/rushee_list', isLoggedIn, function(req,res){
+        User.byRushee("Rushee", function(err, rou) {
+            if (rou) {
+                var first_names = [];
+                var last_names = [];
+                var majors = [];
+                var yes_votes = [];
+                var no_votes = [];
+
+                for (i = 0; i < rou.length; i++) { 
+                    first_names.push(rou[i].personal.first_name);
+                    last_names.push(rou[i].personal.last_name);
+                    majors.push(rou[i].personal.major);
+
+                }
+
+
+                res.render('rushee_list.ejs', { first_names_list : first_names, last_names_list : last_names, majors_list : majors })
+            }
+
+            else {
+                if (err) {
+                    console.log(err);
+                }
+            }
+         })  
+        });
+
+
 
 
     // =====================================
@@ -90,6 +135,4 @@ function isBrother(req,res,next) {
 
     // if they aren't redirect them to the home page
     res.redirect('/');
-
 }
-

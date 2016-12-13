@@ -72,10 +72,6 @@ io.on('connection', function(socket){
 
 });
 
-// socket.on('loginProfile', function(data) {
-//   console.log(data, "outside");
-// });
-
 
 // launch ======================================================================
 http.listen(port, function(){

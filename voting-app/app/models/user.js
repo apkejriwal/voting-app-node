@@ -38,5 +38,10 @@ userSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
+userSchema.statics.byRushee = function(role, cb) {
+    return this.find({"role": role}, cb);
+};
+
+
 // create the model for users and expose it to our app
 module.exports = mongoose.model('User', userSchema);

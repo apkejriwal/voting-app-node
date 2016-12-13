@@ -108,11 +108,8 @@ module.exports = function(passport) {
                 newUser.personal.last_name  =  req.body.last_name;
                 newUser.personal.major      =  req.body.major;
 
-                console.log(req.body);
-                console.log(newUser.role);
-
-                // newUser.role = req.body.role;
-
+                newUser.role = req.body.role;
+                
                 // save the user
                 newUser.save(function(err) {
                     if (err)

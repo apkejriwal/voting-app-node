@@ -18,14 +18,14 @@
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
-    // load the rushee profile if a rushee
+     <!-- load the rushee profile if a rushee -->
     <% if (user.role == 'Rushee') { %>
         <% include ./partials/rushee %>
     <% } %>
 
-    // load the brother profile if a brother
-    <% if (user.role == 'Rushee') { %>
-        <% include ./partials/rushee %>
+    <!-- load the brother profile if a brother    -->
+    <% if (user.role == 'Brother') { %>
+        <% include ./partials/brother %>
     <% } %>
 
 
