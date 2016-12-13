@@ -1,10 +1,10 @@
-// app/models/user.js
+// app/models/rushee.js
 // load the things we need
 var mongoose = require('mongoose');
 var bcrypt   = require('bcrypt-nodejs');
 
 // define the schema for our user model
-var userSchema = mongoose.Schema({
+var rusheeSchema = mongoose.Schema({
 
     local            : {
         email        : String,
@@ -17,20 +17,24 @@ var userSchema = mongoose.Schema({
         major             : String
     },
     role             : {
-        default: 'Brother'
+        default: 'Rushee'
     }
+    votes: [{
+        vote:     {type: String},
+        brother_id : {type: String}
+     }],
 });
 
 // methods ======================
 // generating a hash
-userSchema.methods.generateHash = function(password) {
+rusheeSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 // checking if password is valid
-userSchema.methods.validPassword = function(password) {
+rusheeSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Rushee', rusheeSchema);

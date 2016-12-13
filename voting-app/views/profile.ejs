@@ -31,8 +31,15 @@
 
                     <p>
                         <strong>id</strong>: <%= user._id %><br>
+
                         <strong>email</strong>: <%= user.local.email %><br>
                         <strong>password</strong>: <%= user.local.password %>
+
+                        <strong>first_name</strong>: <%= user.personal.first_name %>
+                        <strong>last_name</strong>: <%= user.personal.last_name %>
+                        <strong>major</strong>: <%= user.personal.major %>
+                        <strong>major</strong>: <%= user.role %>
+
                     </p>
 
             </div>

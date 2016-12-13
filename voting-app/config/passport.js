@@ -104,14 +104,20 @@ module.exports = function(passport) {
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password);
 
+                console.log(req.body);
 
-                newUser.brother.first_name  = req.body.first_name;
-                newUser.brother.last_name  = req.body.last_name;
-                newUser.brother.year       =  req.body.year;
-                newUser.brother.major      =  req.body.major;
-                newUser.brother.number     =  req.body.number;
-                newUser.brother.position   =  req.body.position;
-                newUser.brother.active     =  req.body.active;
+
+                newUser.personal.first_name  = req.body.first_name;
+                newUser.personal.last_name  =  req.body.last_name;
+                newUser.personal.major      =  req.body.major;
+
+                newUser.role = req.body.role;
+
+
+                // newUser.brother.year       =  req.body.year;
+                // newUser.brother.number     =  req.body.number;
+                // newUser.brother.position   =  req.body.position;
+                // newUser.brother.active     =  req.body.active;
 
                 // save the user
                 newUser.save(function(err) {
