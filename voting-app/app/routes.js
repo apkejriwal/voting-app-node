@@ -78,8 +78,11 @@ module.exports = function(app, passport) {
     // =====================================
 
     app.get('/rushee_list', isLoggedIn, function(req,res){
-        User.byRushee("Rushee", function(err, rou) {
-            if (rou) {
+
+        User.find({role: "Rushee"}, function (err, users){
+            if (err) throw err;
+            
+            if (users) {
                 var first_names = [];
                 var last_names = [];
                 var majors = [];
@@ -87,20 +90,20 @@ module.exports = function(app, passport) {
                 var yes_votes = [];
                 var no_votes = [];
 
-                for (i = 0; i < rou.length; i++) { 
-                    first_names.push(rou[i].personal.first_name);
-                    last_names.push(rou[i].personal.last_name);
-                    majors.push(rou[i].personal.major);
-                    emails.push(rou[i].local.email);
+                for (i = 0; i < users.length; i++) { 
+                    first_names.push(users[i].personal.first_name);
+                    last_names.push(users[i].personal.last_name);
+                    majors.push(users[i].personal.major);
+                    emails.push(users[i].local.email);
                 }
-                res.render('rushee_list.ejs', {user: req.user, first_names_list : first_names, last_names_list : last_names, majors_list : majors, emails_list: emails })
+
+                res.render('rushee_list.ejs', {user: req.user, first_names_list : first_names, 
+                    last_names_list : last_names, majors_list : majors, emails_list: emails });
             }
-            else {
-                if (err) {
-                    console.log(err);
-                }
-            }
-         })  
+        });
+        
+
+
         });
 
     // =====================================
@@ -108,92 +111,47 @@ module.exports = function(app, passport) {
     // =====================================
 
     app.post('/vote', function(req,res){
-    
-        //brother push add, check if there is a previous rushee object
-        User.byBrotherEmail(req.body.brother_email, function(err, rou) {
-            if (rou) {
 
-                console.log("before rou");
-                console.log(rou);
-                console.log("afte rou");
+        User.findOne({'local.email' : req.body.rushee_email}, function(err, rushee) {
+            if (err) throw error; 
 
-                console.log(req.user._id);
-                console.log("after req");
-                var votes_list = rou[0].votes
+            var brother_email = req.user.local.email;
+            var vote_value  = req.body.vote_value;
+
+            var vote_struct = {brother_email, vote_value};
 
 
-                 console.log("req body bef");
+            var rushee_votes = rushee.votes
+            var update_bool = false; 
 
-                console.log(req.body);
+            //check and see if a brother has already voted
+            for (var i = 0; i < rushee_votes.length; i++) {
+                if (rushee_votes[i].brother_email == brother_email) {
+                    rushee.votes[i] = vote_struct;
+                    update_bool = true;
 
-                console.log("req body af");
-                var dict_vote = req.body;
-
-                var update_bool = false;
-
-                for (var i = 0; i < votes_list.length; i ++) {
-                    if (votes_list[i].rushee_email == req.body.rushee_email) {
-                        rou[0].votes[i] = dict_vote
-                        update_bool = true; 
-
-                        console.log(rou[0].votes[0]);
-                        console.log('before save');
-
-                        // rou[0].save(function (err, updatedVote) {
-                        //     if (err) return handleError(err);
-                        //     res.send(updatedVote);
-                        // });
-
-                        // User.update({'_id': userID}, { $set: { role : 'Rushee' }}, cb);
-
-                        User.update({'_id': req.user._id}, {$set: {'votes.vote_value': req.body.vote_value}}, function (err, result) {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
-                    }
-                }
-
-                if (!update_bool) {
-                    rou[0].votes.push(dict_vote);
-                    rou[0].save(function(err) {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
+                    rushee.save(function(err) {
+                        if (err) throw err;
+                        console.log('Rushee successfully updated! update')
+                    });
                 }
             }
-        });
 
-        User.byRusheeEmail(req.body.rushee_email, function(err, rou) {
-            if (rou) {
+            //if not, add it to the rushee's votes 
+            if (!update_bool) {
+                rushee.votes.push(vote_struct); 
 
-                var votes_list = rou[0].votes
-                var dict_vote = req.body;
-
-                var update_bool = false;
-
-                for (var i = 0; i < votes_list.length; i ++) {
-                    if (votes_list[i].brother_email == req.body.brother_email) {
-                        rou[0].votes[i] = dict_vote
-                        update_bool = true; 
-                    }
-                }
-
-                if (!update_bool) {
-                    rou[0].votes.push(dict_vote);
-
-                    rou[0].save(function(err) {
-                            if (err) {
-                                console.log(err);
-                            }
-                        });
-                }
+                rushee.save(function(err) {
+                    if (err) throw err;
+                    console.log('Rushee successfully updated! insert' );
+                });
             }
-        });
-        res.redirect('rushee_list')
+
+            res.redirect('rushee_list')
+
+            });
+
     });
-
 
     // =====================================
     // LOGOUT ==============================
