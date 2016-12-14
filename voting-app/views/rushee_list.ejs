@@ -8,8 +8,29 @@
     <style>
         body        { padding-top:80px; }
     </style>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+
+    var socket = io();
+
+    function vote() {
+        console.log("hit vote");
+        socket.emit('login','test');
+    };
+
+    socket.on('redirect', function(destination) {
+        console.log("hit redirect");
+        window.location.href = destination;
+    });
+
+    </script>
+
 </head>
 <body>
+
+
 <div class="container">
 
 <div class="col-sm-6 col-sm-offset-3">
@@ -22,7 +43,6 @@
                     <th>First Name</th>
                     <th>Last Name </th>
                     <th>Major</th>
-                    <th>Email</th>
                     <th>Yes Votes</th>
                     <th>No Votes</th>
                     <th></th>
@@ -36,9 +56,8 @@
                     <td><%= first_names_list[i] %></td>
                     <td><%= last_names_list[i] %></td>
                     <td><%= majors_list[i] %></td>
-                    <td><%= emails_list[i] %></td>
-                    <td></td>
-                    <td></td>
+                    <td><%= yes_votes_list[i] %></td>
+                    <td><%= no_votes_list[i] %></td>
                     <td> 
                         <form action="/vote" method="post" type="hidden">
                             <div>           
@@ -64,11 +83,9 @@
                             <div>
                                 <input type="hidden" value="No"  name="vote_value">
                             </div>
-                        <button type="submit" class="btn btn-default btn-sm">No</button>
+                        <button type="submit" class="btn btn-default btn-sm"">No</button>
                         </form>
                     </td>
-                   <!--  <td><button id="<% i + 1 %>" type="button" value ="<%= user.local.email %>" data-value-1="<%= emails_list[i] %>" onclick="voteYes()" class="btn btn-default btn-sm">Yes</button></td>
-                    <td><button id="<% i + 2 %>" type="button" value = "<%= user.local.email %>" data-value-2="<%= emails_list[i] %>"  onclick="voteNo()" class="btn btn-default btn-sm">No</button></td> -->
                   </tr>
                 <% } %>
 
@@ -78,36 +95,6 @@
     <a href="/profile" class="btn btn-default btn-sm">Back to Profile</a>
 
 </div>
-
-<script src="/socket.io/socket.io.js"></script>
-
-<script>
-
-    var socket = io();
-
-    var vote = "";
-
-    function voteYes() {
-        var vote = "yes";
-
-        // var brother_email = document.getElementById("1").value;
-        // var buttom1 = document.getElementById("1");
-        // var rushee_email = buttom1.getAttribute("data-value-1");
-        // console.log(rushee_email, "voteYes");
-        // socket.emit('vote', [vote, brother_email, rushee_email]); 
-    }
-
-    function voteNo() {
-        var vote = "no";
-
-        // var brother_email = document.getElementById("2").value;
-        // var buttom2 = document.getElementById("2");
-        // var rushee_email = buttom2.getAttribute("data-value-2");
-        // console.log(rushee_email, "voteNo");
-        // socket.emit('vote', [vote, brother_email, rushee_email]);
-    }
-
-</script>
 
 </div>
 </body>

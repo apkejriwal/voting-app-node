@@ -70,7 +70,7 @@ module.exports = function(app, passport) {
     // =====================================
 
     app.get('/add_brother', isLoggedIn, function(req,res){
-            res.render('add_brother.ejs')
+            res.render('add_brother.ejs');
         });
 
     // =====================================
@@ -95,63 +95,34 @@ module.exports = function(app, passport) {
                     last_names.push(users[i].personal.last_name);
                     majors.push(users[i].personal.major);
                     emails.push(users[i].local.email);
+
+                    var yes = 0; 
+                    var no = 0; 
+
+                    for (j = 0; j < users[i].votes.length; j++ ) {
+                        if (users[i].votes[j].vote_value == "Yes") {
+                            ++yes;
+                        }
+                        else {
+                            ++no;
+                        }
+                    }
+                    yes_votes.push(yes);
+                    no_votes.push(no);
                 }
 
                 res.render('rushee_list.ejs', {user: req.user, first_names_list : first_names, 
-                    last_names_list : last_names, majors_list : majors, emails_list: emails });
+                    last_names_list : last_names, majors_list : majors, emails_list: emails,
+                    yes_votes_list : yes_votes, no_votes_list : no_votes});
             }
         });
-        
-
-
         });
 
     // =====================================
     // VOTING SECTION ======================
     // =====================================
 
-    app.post('/vote', function(req,res){
 
-        User.findOne({'local.email' : req.body.rushee_email}, function(err, rushee) {
-            if (err) throw error; 
-
-            var brother_email = req.user.local.email;
-            var vote_value  = req.body.vote_value;
-
-            var vote_struct = {brother_email, vote_value};
-
-
-            var rushee_votes = rushee.votes
-            var update_bool = false; 
-
-            //check and see if a brother has already voted
-            for (var i = 0; i < rushee_votes.length; i++) {
-                if (rushee_votes[i].brother_email == brother_email) {
-                    rushee.votes[i] = vote_struct;
-                    update_bool = true;
-
-                    rushee.save(function(err) {
-                        if (err) throw err;
-                        console.log('Rushee successfully updated! update')
-                    });
-                }
-            }
-
-            //if not, add it to the rushee's votes 
-            if (!update_bool) {
-                rushee.votes.push(vote_struct); 
-
-                rushee.save(function(err) {
-                    if (err) throw err;
-                    console.log('Rushee successfully updated! insert' );
-                });
-            }
-
-            res.redirect('rushee_list')
-
-            });
-
-    });
 
     // =====================================
     // LOGOUT ==============================
