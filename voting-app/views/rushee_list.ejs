@@ -13,6 +13,10 @@
 
     <script>
 
+
+    // socket code that would emit to all clients to refresh their page
+    // as a result, every client would be updated with the current amount of votes 
+
     // var socket = io();
 
     // function vote() {
@@ -51,6 +55,9 @@
                 </thead>
                 <tbody>
 
+                <!-- from get request, user is passed attributes  -->
+                <!-- parsed to generate table -->
+
                 <% for(var i=0; i < first_names_list.length; i++) {%>
                   <tr>
                     <td><%= first_names_list[i] %></td>
@@ -59,6 +66,8 @@
                     <td><%= yes_votes_list[i] %></td>
                     <td><%= no_votes_list[i] %></td>
                     <td> 
+
+                    <!-- buttons are created in a hidden form that are assigned the value of a unique identifeir of the rushee -->
                         <form action="/vote" method="post" type="hidden">
                             <div>           
                                 <input type="hidden" value="<%= emails_list[i] %>" name="rushee_email">

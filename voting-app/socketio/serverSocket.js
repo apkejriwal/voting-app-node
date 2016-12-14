@@ -1,3 +1,6 @@
+// server side for socket functionality 
+// will redirect to rushee_list page 
+
 exports.init = function(io) {
 
 io.on('connection',function(socket){
