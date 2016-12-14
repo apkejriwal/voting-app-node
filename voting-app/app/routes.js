@@ -1,3 +1,5 @@
+// importing User Model 
+
 var User            = require('../app/models/user');
 
 // app/routes.js
@@ -55,28 +57,25 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
 
-    // =====================================
-    // VOTING SECTION =====================
-    // =====================================
-
-      app.get('/voting', isLoggedIn, function(req,res){
-            res.render('voting.ejs', {
-                user :req.user 
-            })
-        });
 
     // =====================================
     // ADD BROTHER SECTION =================
     // =====================================
 
+    // view generated for a get to create a new brother
+    // only accessible by logged in brothers, and not rushees 
+
     app.get('/add_brother', isLoggedIn, function(req,res){
             res.render('add_brother.ejs');
-        });
+    });
 
     // =====================================
     // RUSHEE LIST SECTION =================
     // =====================================
 
+    // using Mongoose model to query the user model
+    // returns a list of all rushees 
+    // callback returns values of rushees. values are parsed and displayed in get of rushee_list
     app.get('/rushee_list', isLoggedIn, function(req,res){
 
         User.find({role: "Rushee"}, function (err, users){
@@ -111,17 +110,13 @@ module.exports = function(app, passport) {
                     no_votes.push(no);
                 }
 
+                // sends params to rushee_list ejs file to generate table
                 res.render('rushee_list.ejs', {user: req.user, first_names_list : first_names, 
                     last_names_list : last_names, majors_list : majors, emails_list: emails,
                     yes_votes_list : yes_votes, no_votes_list : no_votes});
             }
         });
         });
-
-    // =====================================
-    // VOTING SECTION ======================
-    // =====================================
-
 
 
     // =====================================

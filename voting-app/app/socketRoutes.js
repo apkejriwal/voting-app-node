@@ -24,6 +24,15 @@ module.exports = function(app,io) {
                         if (err) throw err;
                         console.log('Rushee successfully updated! update');
                         res.redirect('rushee_list');
+
+                
+                    // io.sockets.emit('login','test');
+
+                    // io.socket.on('redirect', function(destination) {
+                    //     console.log("hit redirect");
+                    //     window.location.href = destination;
+                    // });
+
                     });
                 }
             }
@@ -36,10 +45,18 @@ module.exports = function(app,io) {
                     if (err) throw err;
                     console.log('Rushee successfully updated! insert' );
                     res.redirect('rushee_list');
+
+                    // var socket = io();
+
+                    // socket.emit('login','test');
+
+                    // socket.on('redirect', function(destination) {
+                    //     console.log("hit redirect");
+                    //     window.location.href = destination;
+                    // });
+
                 });
-
             }
-
             });
 
     });
